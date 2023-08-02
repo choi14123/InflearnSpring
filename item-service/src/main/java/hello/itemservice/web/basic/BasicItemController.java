@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -38,18 +39,13 @@ public class BasicItemController {
     }
 
     @PostMapping("/add")
-    public String addItemV1(@RequestParam String itemName,
-                            @RequestParam int price,
-                            @RequestParam Integer quantity,
-                            Model model) {
-        Item item = new Item();
-        item.setItemName(itemName);
-        item.setPrice(price);
-        item.setQuantity(quantity);
-        itemRepository.save(item);
-        model.addAttribute("item", item);
-        return "basic/item";
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
     }
+
 
 
     @GetMapping("/{itemId}/edit")
@@ -57,6 +53,12 @@ public class BasicItemController {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "basic/editForm";
+    }
+
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}";
     }
 
 
