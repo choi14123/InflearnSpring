@@ -64,10 +64,9 @@ public class BasicItemController {
 
     @PostConstruct
     public void init() {
-        itemRepository.save(new Item("칫솔", 100000, 7));
-        itemRepository.save(new Item("치약", 250000, 13));
-        itemRepository.save(new Item("샴푸", 400000, 12));
-        itemRepository.save(new Item("린스", 300000, 13));
+        itemRepository.save(new Item("칫솔", 7000, 7));
+        itemRepository.save(new Item("치약", 13000, 13));
+        itemRepository.save(new Item("샴푸", 6000, 12));
+        itemRepository.save(new Item("린스", 6500, 13));
     }
-
 }
